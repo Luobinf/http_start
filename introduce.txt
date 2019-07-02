@@ -1,0 +1,100 @@
+
+一.Server + Client + HTTP
+浏览器负责发起请求，服务器在80端口接收请求，服务器负责返回内容(响应)，浏览器负责下载响应内容。
+
+HTTP的作用就是指导浏览器与服务器如何通信。
+
+二.HTTP请求头
+HTTP请求头内容最多包含四部分，但至少包含三部分。
+例如：
+    在谷歌浏览器中打开控制台，进入Network，输入https://www.baidu.com，然后点击第一行，进入Headers
+    接着再点击Request Headers，然后再点击旁边的view parsed即可，即可查看请求头。
+
+GET / HTTP/1.1
+Host: www.baidu.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: BAIDUID=84F8FF3B22D91747D3B329A707BF01F4:FG=1; BIDUPSID=84F8FF3B22D91747D3B3
+29A707BF01F4; PSTM=1556885718; BD_UPN=12314753; BDUSS=ElycklVUWNOQ2xWUmpDajE4Nkw3a
+mtCNEFYazUwT3hhRTVEVHVZMGdTTmFPQVpkRVFBQUFBJCQAAAAAAAAAAAEAAAANOkPlwuTJ8TAxMjM0NTY
+3ODkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFqr3lxaq95cU;
+SSID=26523_1436_21125_29135_20698_29238_28519_29099_28836_29220_26350; H_PS_645EC=
+8a835SLup%2Fu2AwNWh1AOOhxjeqUNPg8AMHSuTpZLNElaF6Qu7PEnnagI79A; BDORZ=B490B5EBF6F3CD
+15D22BCDA1598
+
+    可以看到以上请求头包含了三部分内容。第一行就是第一部分，由请求的方式、路劲、协议/版本号组成。
+第二部分由键值对组成，key1:value1,key2:value2.......。第三部分是回车组成，为什么要有回车呢？
+这样做是为了区分请求头的第三部分和第四部分。第四部分是要上传的数据，只不过上述请求没有数据而已。
+
+所以，我们可以知道一般的请求头内容格式为：
+1 动词路径协议/版本
+2 Key1: value1
+2 Key2: value2
+2 Key3: value3
+2 Content-Type: application/x-www-form-urlencoded
+2 Host: www.baidu.com
+3 回车(也就是空行)
+4 要上传的数据
+上述请求的方式有GET POST DELETE PATCH PUT HEAD OPTIONS
+
+三. http响应头
+    http响应头和请求头一样，也最多包含四部分内容，至少包含三部分内容。
+    http响应头的基本格式为：
+1 协议/版本号状态码状态解释
+2 Key1: value1
+2 Key2: value2
+2 Content-Length: 17931
+2 Content-Type: text/html
+3
+4 要下载的内容 
+
+    同理使用谷歌浏览器查看http响应头的内容，只要进入Headers，然后点击Respons Headers，最后再点击旁边的view
+即可。
+
+例如访问www.baidu.com的响应头：
+
+HTTP/1.1 200 OK
+Bdpagetype: 2
+Bdqid: 0xd7fa7e1d0020f4aa
+Cache-Control: private
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Type: text/html;charset=utf-8
+Date: Tue, 02 Jul 2019 00:58:12 GMT
+Expires: Tue, 02 Jul 2019 00:58:12 GMT
+Server: BWS/1.1
+Set-Cookie: BDSVRTM=275; path=/
+Set-Cookie: BD_HOME=1; path=/
+Set-Cookie: H_PS_PSSID=26523_1436_21125_29135_20698_29238_28519_29099_28836_29220_26350; path=/; domain=.baidu.com
+Strict-Transport-Security: max-age=172800
+X-Ua-Compatible: IE=Edge,chrome=1
+Transfer-Encoding: chunked   
+
+四.也可以使用curl来查看请求头和响应头
+例如： curl -s -v -H  -- "https://www.baidu.com"
+
+1.得到的http请求头内容为：
+> GET / HTTP/1.1
+> Host: www.baidu.com
+> User-Agent: curl/7.55.0
+> Accept: */*
+>
+
+2.得到的响应头内容为：
+< HTTP/1.1 200 OK
+< Accept-Ranges: bytes
+< Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform
+< Connection: Keep-Alive
+< Content-Length: 2443
+< Content-Type: text/html
+< Date: Tue, 02 Jul 2019 01:19:15 GMT
+< Etag: "588603eb-98b"
+< Last-Modified: Mon, 23 Jan 2017 13:23:55 GMT
+< Pragma: no-cache
+< Server: bfe/1.0.8.18
+< Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/
+<
